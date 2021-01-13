@@ -41,7 +41,7 @@ and wait for few seconds it will start automatically
 <br /><br />
 
 - **<ins>To stop the execution</ins>**<br /><br />
-Live Stream will open in full screen if you want to exit full screen mode simple ***double click*** on your mouse to stop the execution go to terminal where you have started exection and press
+Live Stream will open in full screen if you want to exit full screen mode simply ***double click*** on your mouse to stop the execution go to terminal where you have started exection and press
 ```
 ctrl + c
 ```
