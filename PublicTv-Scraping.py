@@ -42,7 +42,7 @@ def fetch(mainurl):
             url = json.loads(data[1].contents[0][27:-1])['metadata']['qualities']['auto'][0]['url']
 
             m3u8_main_data = m3u8.loads(session.get(url = url, headers = head).text)
-            url = m3u8_main_data.data['playlists'][0]['uri']
+            url = m3u8_main_data.data['playlists'][-1]['uri']       # change -1 to 0 for low quality stream in case your internet is slow
 
                 
             m3u8_main_data = m3u8.loads(session.get(url = url, headers = head).text)
@@ -57,8 +57,9 @@ def fetch(mainurl):
                 
             if startplaying == 1:
                 p = vlc.MediaPlayer('publictvlive.ts')
+                p.set_fullscreen(True)
                 p.play()
-                startplaying = 3
+                startplaying = 2
 
             if counter == 1:
                 startplaying = 1
