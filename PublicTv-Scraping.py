@@ -1,6 +1,5 @@
 import requests
 import bs4
-from pprint import pprint
 import json
 import m3u8
 import os
