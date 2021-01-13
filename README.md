@@ -13,6 +13,12 @@ or if you install multiple python3 versions on windows
 ```bash
 py -version -m venv publictv
 ```
+
+**Activating the Virtual environment on Windows**
+```bash
+publictv\Scripts\activate
+```
+
 <br />
 on Mac/Linux
 
@@ -22,6 +28,14 @@ python3 -m venv publictv
 
 <br />
 here publictv is name given to Virtual Environment
+<br />
+<br />
+
+
+**Activating the Virtual environment on Mac / Linux**
+```bash
+source publictv/bin/activate
+```
 <br />
 <br />
 
