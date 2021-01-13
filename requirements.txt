@@ -1,0 +1,14 @@
+beautifulsoup4==4.9.3
+bs4==0.0.1
+certifi==2020.12.5
+chardet==4.0.0
+html5lib==1.1
+idna==2.10
+iso8601==0.1.13
+m3u8==0.8.0
+python-vlc==3.0.11115
+requests==2.25.1
+six==1.15.0
+soupsieve==2.1
+urllib3==1.26.2
+webencodings==0.5.1
