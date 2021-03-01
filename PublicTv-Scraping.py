@@ -31,39 +31,42 @@ def fetch(mainurl):
     startplaying = 0 
     counter= 0
     firstsegmentnumber = 0    
+    print(mainurl)
     with open("publictvlive.ts",'wb+') as f:
         while(1):
+            try: 
+                webdata = session.get(url = mainurl,headers = head)
+                soup = bs4.BeautifulSoup(webdata.text, 'html5lib')
+                data = soup.findAll("script")
+        
+                url = json.loads(data[1].contents[0][27:-1])['metadata']['qualities']['auto'][0]['url']
 
-            webdata = session.get(url = mainurl,headers = head)
-            soup = bs4.BeautifulSoup(webdata.text, 'html5lib')
-            data = soup.findAll("script")
-    
-            url = json.loads(data[1].contents[0][27:-1])['metadata']['qualities']['auto'][0]['url']
+                m3u8_main_data = m3u8.loads(session.get(url = url, headers = head).text)
+                url = m3u8_main_data.data['playlists'][-1]['uri']       # change -1 to 0 for low quality stream in case your internet is slow
 
-            m3u8_main_data = m3u8.loads(session.get(url = url, headers = head).text)
-            url = m3u8_main_data.data['playlists'][-1]['uri']       # change -1 to 0 for low quality stream in case your internet is slow
+                    
+                m3u8_main_data = m3u8.loads(session.get(url = url, headers = head).text)
+                url = url[:url.rfind('/')+1]
 
-                
-            m3u8_main_data = m3u8.loads(session.get(url = url, headers = head).text)
-            url = url[:url.rfind('/')+1]
+                if counter == 0:
+                    firstsegmentnumber = m3u8_main_data.data['media_sequence']
 
-            if counter == 0:
-                firstsegmentnumber = m3u8_main_data.data['media_sequence']
+                if m3u8_main_data.data['media_sequence'] % 10 == firstsegmentnumber % 10:
+                    for segment in m3u8_main_data.data['segments']:
+                        f.write(session.get(url = url+segment['uri'], headers = head).content)
+                    
+                if startplaying == 1:
+                    p = vlc.MediaPlayer('publictvlive.ts')
+                    p.set_fullscreen(True)
+                    p.play()
+                    startplaying = 2
 
-            if m3u8_main_data.data['media_sequence'] % 10 == firstsegmentnumber % 10:
-                for segment in m3u8_main_data.data['segments']:
-                    f.write(session.get(url = url+segment['uri'], headers = head).content)
-                
-            if startplaying == 1:
-                p = vlc.MediaPlayer('publictvlive.ts')
-                p.set_fullscreen(True)
-                p.play()
-                startplaying = 2
+                if counter == 1:
+                    startplaying = 1
 
-            if counter == 1:
-                startplaying = 1
-
-            counter = counter + 1
+                counter = counter + 1
+            except:
+                print("dailymotion Offline")
 
 
 fetch(init())
